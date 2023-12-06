@@ -3,8 +3,9 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate
 from django.urls import reverse
 from .models import Profile
-from .forms import UserForm , ProfileForm
+from .forms import UserForm , ProfileForm , SignupForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # Create your views here.
 
 
@@ -14,17 +15,19 @@ from django.contrib.auth.decorators import login_required
 def signup(request):
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password1')
             user = authenticate(username=username , password=password)
+         
             login(request, user)
-            return redirect('/')
+            return redirect('login')
+          
     
     else:
-        form = UserCreationForm()
+        form = SignupForm()
 
 
 
@@ -64,7 +67,7 @@ def profile_edit(request, slug):
             myprofile.user = request.user
             myprofile.save()
 
-            return redirect(reverse('accounts:profile'))
+            return redirect(reverse('accounts:profile', kwargs={'slug': request.user.profile.slug}))
 
 
     else :
