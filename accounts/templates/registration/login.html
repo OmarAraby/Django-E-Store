@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+
+{% block body %}
+
+<main class="mt-5">
+    <div class="container d-flex align-items-center justify-content-center h-100">
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+{% bootstrap_form form %}
+
+<input type="submit" class="btn btn-primary" value="login">
+<input type="hidden" name="next" value="{{ next }}">
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+</form>
+
+{# Assumes you set up the password_reset view in your URLconf #}
+            
+ 
+    </div>
+</main>
+
+{% endblock body %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block body %}
+    <!-- bradcam_area  -->
+
+
+    <div class="job_details_area">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-8 mx-auto">
+                    <div class="job_sumary">
+                        
+                        <div class="summery_header">
+                            <h3 style="align:center;">Profile Summery</h3>
+
+                            <div class="media post_item">
+                                {% if profile.image %}
+                                    <!-- Check if the author has a profile image -->
+                                    <img src="{{ profile.image.url }}" alt="{{ profile }}" style="width: 120px; height: 120px;  border-radius: 50%;  object-fit: cover;">
+                                {% else %}
+                                    <img src="{% static 'img/Profile-Avatar.png' %}" alt="{{ post.author.username }}" style="width: 120px; height: 120px;  border-radius: 50%;  object-fit: cover;">
+                                {% endif %}
+                             
+                            </div>
+                        </div>
+                        <div class="job_content">
+                            <ul>
+                                <li>Name : <span>{{profile}}</span></li>
+                                <li>Email : <span>{{profile.user.email}} </span></li>
+                                <li>Phone : <span>{{profile.phone_number}}</span></li>
+                                <li>Address : <span>{{profile.country}} - {{profile.address}}</span></li>
+                                
+                               
+
+                            </ul>
+
+                    </div> <div class="p-5">
+                            <a class="btn btn-primary btn-md my-0 p" href="{% url "accounts:profile_edit" slug=request.user.username %}">Edit Profile </a>
+                        </div> 
+                    </div>
+                   
+
+                </div>
+                <div class="row d-flex justify-content-center wow fadeIn">
+
+                    <!--Grid column-->
+                    <div class="col-md-6 text-center">
+            
+                      <h4 class="my-4 h4">My Orders</h4>
+                      <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>@twitter</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                    <!--Grid column-->
+            
+                  </div>
+                  <!--Grid row-->
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+    
