@@ -54,11 +54,26 @@ class Category(models.Model):
     CATName = models.CharField(max_length=50 , verbose_name=_('Name'))
     CATParent = models.ForeignKey('self' ,limit_choices_to={'CATParent__isnull':True} , verbose_name=_('MAin Category'),on_delete= models.CASCADE , blank=True, null=True) 
     CATDesc = models.TextField(verbose_name=_('Description'))
+    CATImg = models.ImageField(upload_to='category/' ,verbose_name=_('Image'),blank=True, null=True)
+    CATSlug = models.SlugField(blank=True, null=True, verbose_name=_("Category URL"))
+
+
+    def save(self, *args, **kwargs):
+        if not self.CATSlug:
+            self.CATSlug =slugify(self.CATName)
+
+        super(Category , self).save(*args , **kwargs)
     
 
     class Meta:
             verbose_name = _("Category")
             verbose_name_plural = _("Categories")
+
+
+    def get_absolute_url(self):
+        return reverse("product:category_detail", kwargs={"slug": self.CATSlug})
+    
+
 
     def __str__(self):
         return self.CATName

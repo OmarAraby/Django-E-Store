@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+
+<!-- Section-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Cart</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Explore Your Cart Section</p>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section class="py-5">
+
+    <div class="container px-4 px-lg-5 mt-5">
+
+        {% if cart_products %}
+
+        <div class="small-container cart-page">
+                <table>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                     {% for product in cart_products %}
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                            {% if product.PRDImage %}
+                                <img src="{{product.PRDImage.url}}">
+                            {% else %}
+                                <img src="{% static "img/no image.jpg" %}">     
+                            {% endif %}
+                                <div>
+                                    <p style="font-size: 20px;">{{product}}</p>
+                                    <small style="font-size: 20px;">Price: ${{product.PRDPrice}}</small>
+                                    <br><br>
+                                    <a href="{% url 'cart:cart_delete' product.PRDSlug %}" class="btn btn-outline-dark mt-auto">Delete</a>
+                                    <a href="#" class="btn btn-outline-dark mt-auto update-cart" data-index="{{ product.PRDSlug }}">Update</a>
+
+
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="col-md-6">
+                         <select class="form-select form-select-sm" id="select{{product.PRDSlug }}">
+                  
+                                {% for key, value in quantity.items %}
+                                    {% if key == product.PRDSlug  %}
+                                <option selected>{{ value }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                                               
+
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                                  <option value="11">11</option>
+                                  <option value="12">12</option>
+                                
+                            </select>
+                            </div>
+                        </td>
+                        {% for key, value in  single_total_price.items%}
+                            {% if key == product.PRDSlug  %}
+                            <td>Total Price: ${{value}}</td>
+                            {% endif %}
+
+                            
+                        {% endfor %}
+                        
+                    </tr>
+                    {% endfor %}
+                    
+                </table>
+                <div class="total-price">
+                    <table>
+                        
+                        
+                        <tr>
+                            <td>Total</td>
+                            <td>${{ all_total_price }}</td>
+
+
+                        </tr>
+
+
+                    </table>
+
+                  
+
+                </div>
+                <br><br><br>
+             <div class="d-flex justify-content-center">
+                <a href="{% url 'order:confirmed_order' %}" class="btn btn-outline-dark">CheckOut</a>
+             </div>               
+
+
+                {% else %}
+               <h2> There Is Nothing In Your Cart Yet .......</h2>
+               <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+            {% endif %}
+    
+        </div>
+ 
+</section>
+
+
+<h1> </h1>
+
+
+
+
+<script>
+$(document).on('click', '.update-cart', function(e){
+    e.preventDefault();
+    
+    var productSlug = $(this).data('index');
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart:cart_update' %}',
+        data: {
+            product_slug: productSlug,
+            product_qty: $('#select' + productSlug + ' option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function(json){
+            location.reload();
+        },
+        error: function(xhr, errmsg, err){
+            // Handle error if needed
+        }
+    });
+});
+
+
+</script>
+
+	
+{% endblock body %}
+
+

@@ -6,87 +6,100 @@
 {% block body %}
     <!-- bradcam_area  -->
 
+ <div class="container-fluid">
+    <div class="row" >
+        <div class="col-12 col-md-2 d-none d-md-block d-lg-block" style="background:url({%static 'images/slidebar.png'%});height:100vh;"> <i class="fa-solid fa-user"></i>
 
-    <div class="job_details_area">
-        <div class="container">
-            <div class="row">
-                
-                <div class="col-lg-8 mx-auto">
-                    <div class="job_sumary">
-                        
-                        <div class="summery_header">
-                            <h3 style="align:center;">Profile Summery</h3>
+            <div class="list-group" id="MyTab" role="tablist">
+              {# <a class="list-group-item list-group-item-action"  href="/dashboard/"  ><i class="fa-solid fa-house"></i> Dashboard </a> #}
+              <a class="list-group-item list-group-item-action"  href="/dashboard/orders" ><i class="fa-solid fa-box-open"></i> Orders</a>
+              <a class="list-group-item list-group-item-action"  href="{% url "accounts:profile_edit" slug=request.user.username|lower %}" ><i class="fa-solid fa-user-pen"></i> Edit Profile</a>
+                <a class="list-group-item list-group-item-action"  href="{% url "password_change" %}" ><i class="fa-solid fa-wrench"></i> Change Password</a>
 
-                            <div class="media post_item">
-                                {% if profile.image %}
-                                    <!-- Check if the author has a profile image -->
-                                    <img src="{{ profile.image.url }}" alt="{{ profile }}" style="width: 120px; height: 120px;  border-radius: 50%;  object-fit: cover;">
-                                {% else %}
-                                    <img src="{% static 'img/Profile-Avatar.png' %}" alt="{{ post.author.username }}" style="width: 120px; height: 120px;  border-radius: 50%;  object-fit: cover;">
-                                {% endif %}
-                             
+                <a class="list-group-item list-group-item-action" href="{% url 'logout' %}" ><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </div>
+          </div>
+
+<div class="col-12 col-md-10">
+        <h3 class="default-style"> User Dashboard </h3><hr>
+
+         <div class="row">
+                 <div class="col-12 col-md-3 mb-sm-2"><a href="/dashboard/orders">
+                    <div class="card dashboard-card" style="background:url(/static/images/dashboard-card.png)">
+                        <div class="row align-items-center"><div class="col"><i class="fa fa-user fa-dashboard"></i></div>
+                           <div class="col dashboard-col-total"> Total Orders</h5>
+                                <div class="card-dashboard-col-total-number"> {%if total_orders <= 0%}
+                                    0
+                                    {%else%}
+                                    {{total_orders}}
+                                    {%endif%}
+                                </div> 
                             </div>
                         </div>
-                        <div class="job_content">
-                            <ul>
-                                <li>Name : <span>{{profile}}</span></li>
-                                <li>Email : <span>{{profile.user.email}} </span></li>
-                                <li>Phone : <span>{{profile.phone_number}}</span></li>
-                                <li>Address : <span>{{profile.country}} - {{profile.address}}</span></li>
-                                
-                               
-
-                            </ul>
-
-                    </div> <div class="p-5">
-                            <a class="btn btn-primary btn-md my-0 p" href="{% url "accounts:profile_edit" slug=request.user.username %}">Edit Profile </a>
-                        </div> 
                     </div>
-                   
-
+                    </a>
                 </div>
-                <div class="row d-flex justify-content-center wow fadeIn">
 
-                    <!--Grid column-->
-                    <div class="col-md-6 text-center">
-            
-                      <h4 class="my-4 h4">My Orders</h4>
-                      <table class="table table-hover">
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                              </tr>
-                            </tbody>
-                          </table>
+              <div class="col-12 col-md-3 mb-sm-2"><a href="/dashboard/orders">
+                    <div class="card dashboard-card" style="background:url(/static/images/dashboard-card.png)">
+                        <div class="row align-items-center"><div class="col"><i class="fa fa-truck fa-dashboard"></i></div>
+                           <div class="col dashboard-col-total"> Delivered Orders </h5>
+                            <div class="card-dashboard-col-total-number">
+                               {%if dilevered_orders <= 0%}
+                                0
+                                {%else%}
+                                {{dilevered_orders}}
+                                {%endif%}
+                            </div> </div> </div>
+                    </div></a></div>
+
+              <div class="col-12 col-md-3 mb-sm-2">
+                    <div class="card dashboard-card" style="background:url(/static/images/dashboard-card.png)">
+                        <div class="row align-items-center"><div class="col"><i class="fa fa-user fa-dashboard"></i></div>
+                           <div class="col dashboard-col-total"> Registered on </h5>
+                            <div class="card-dashboard-col-total-number"> {{registered_on}} </div> </div> </div>
+                     </div></div>
+
+             <div class="col-12 col-md-3 mb-sm-2">
+                    <div class="card dashboard-card" style="background:url(/static/images/dashboard-card.png)">
+                        <div class="row align-items-center"><div class="col"><i class="fa fa-user fa-dashboard"></i></div>
+                           <div class="col dashboard-col-total">Last Login Date</h5>
+                            <div class="card-dashboard-col-total-number"> {{last_login}} </div> </div> </div>
+                     </div></div>
+
                     </div>
-                    <!--Grid column-->
-            
-                  </div>
-                  <!--Grid row-->
-            </div>
+
+
+
+
+
+             <p class="default-style" style="margin-top:30px">You recent orders (last 4)</p>
+              <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Status</th>
+              <th scope="col">Date Created</th>
+              <th scope="col">Order Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {%for order in order_id_list%}
+
+              <th scope="row">{{order.order_id}}</th>
+              <td>{{order.order_status}}</td>
+              <td>{{order.date_created}}</td>
+              <td><a href="/dashboard/view_order/{{order.order_id}}"> View Order</a></td>
+            </tr>
+          {%endfor%}
+
+          </tbody>
+              </table>
+
+        </div>
         </div>
     </div>
+</div>
 {% endblock body %}
     
