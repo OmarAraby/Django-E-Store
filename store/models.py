@@ -39,7 +39,7 @@ class Product(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse("product:product_detail", kwargs={"slug": self.PRDSlug})
+        return reverse("store:product_detail", kwargs={"slug": self.PRDSlug})
         
 
 
@@ -71,7 +71,7 @@ class Category(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse("product:category_detail", kwargs={"slug": self.CATSlug})
+        return reverse("store:category_detail", kwargs={"slug": self.CATSlug})
     
 
 
